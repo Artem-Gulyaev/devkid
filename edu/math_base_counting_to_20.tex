@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage{mathpazo}
+\usepackage{setspace}
+\usepackage[utf8]{inputenc}
+% NOTE: sudo apt-get install texlive-lang-cyrillic 
+\usepackage[english, russian]{babel}
+\usepackage[T1, T2A]{fontenc}
+\usepackage{fancyhdr}% http://ctan.org/pkg/fancyhdr
+
+\pagestyle{fancy}% Change page style to fancy
+\fancyhf{}% Clear header/footer
+\fancyhead[C]{Раз, два, три, четыре мыши!}
+\fancyfoot[C]{И ещё немного мышек =)}% \fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}% Default \headrulewidth is 0.4pt
+\renewcommand{\footrulewidth}{0.4pt}% Default \footrulewidth is 0pt
+
+\setlength{\parindent}{0em}
+
+\newcounter{row}
+\newcounter{col}
+
+\newcommand\setrow[9]{
+  \setcounter{col}{1}
+  \foreach \n in {#1, #2, #3, #4, #5, #6, #7, #8, #9} {
+    \edef\x{\value{col} - 0.5}
+    \edef\y{9.5 - \value{row}}
+    \node[anchor=center] at (\x, \y) {\n};
+    \stepcounter{col}
+  }
+  \stepcounter{row}
+}
+
+\newcommand\totwentytable {
+\begin{tikzpicture}[scale=.5]
+
+  \begin{scope}
+    \draw (0, 0) grid (10, 2);
+    \node[anchor=center] at (4.5, -0.9) {\underline{\hspace{1cm}}
+                                         + \underline{\hspace{1cm}}=
+                                        \underline{\hspace{3mm}}
+                                        \underline{\hspace{3mm}}};
+  \end{scope}
+
+  \begin{scope}[xshift=12cm]
+    \draw (0, 0) grid (10, 2);
+    \node[anchor=center] at (4.5, -0.9) {\underline{\hspace{1cm}}
+                                         + \underline{\hspace{1cm}}=
+                                        \underline{\hspace{3mm}}
+                                        \underline{\hspace{3mm}}};
+  \end{scope}
+
+\end{tikzpicture}
+}
+
+\begin{document}
+
+%\noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+
+\onehalfspacing
+
+Привет! Посчитай мышей! =)
+
+\totwentytable
+\\\\\\\\
+\totwentytable
+\\\\\\\\
+\totwentytable
+\\\\\\\\
+\totwentytable
+\\\\\\\\
+
+%\noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+
+\end{document}
