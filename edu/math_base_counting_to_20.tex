@@ -7,6 +7,8 @@
 \usepackage[english, russian]{babel}
 \usepackage[T1, T2A]{fontenc}
 \usepackage{fancyhdr}% http://ctan.org/pkg/fancyhdr
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
 
 \pagestyle{fancy}% Change page style to fancy
 \fancyhf{}% Clear header/footer
@@ -87,8 +89,13 @@
 
 \Large{Привет! Посчитай мышей! =)}
 
+\includegraphics[scale=0.04]{mouse_1}
+
 \singletotwentytable
-\\\\\\\\
+\begin{itemize}
+    \item\Large{В первое поле пиши сколько получилось полностью заполненных строчек.}
+    \item\Large{Вo второе поле пиши сколько получилось палочек в последней строке.}
+\end{itemize}
 \singletotwentytable
 \\\\\\\\
 \singletotwentytable
