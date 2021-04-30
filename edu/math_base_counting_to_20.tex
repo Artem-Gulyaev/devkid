@@ -10,8 +10,8 @@
 
 \pagestyle{fancy}% Change page style to fancy
 \fancyhf{}% Clear header/footer
-\fancyhead[C]{Раз, два, три, четыре мыши!}
-\fancyfoot[C]{И ещё немного мышек =)}% \fancyfoot[R]{\thepage}
+\fancyhead[C]{\Large{Раз, два, три, четыре мыши!}}
+\fancyfoot[C]{\Large{И ещё немного мышек =)}}% \fancyfoot[R]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}% Default \headrulewidth is 0.4pt
 \renewcommand{\footrulewidth}{0.4pt}% Default \footrulewidth is 0pt
 
@@ -35,23 +35,49 @@
 \begin{tikzpicture}[scale=.5]
 
   \begin{scope}
-    \draw (0, 0) grid (10, 2);
-    \node[anchor=center] at (4.5, -0.9) {\underline{\hspace{1cm}}
-                                         + \underline{\hspace{1cm}}=
-                                        \underline{\hspace{3mm}}
-                                        \underline{\hspace{3mm}}};
+    \draw[very thick] (0, 0) grid (10, 2);
+    \node[anchor=center] at (4.5, -0.9) {
+            \textcolor{blue}{\underline{\hspace{1cm}}}
+            + \textcolor{red}{\underline{\hspace{1cm}}}=
+            \underline{\hspace{3mm}}
+            \underline{\hspace{3mm}}
+        };
   \end{scope}
 
   \begin{scope}[xshift=12cm]
-    \draw (0, 0) grid (10, 2);
-    \node[anchor=center] at (4.5, -0.9) {\underline{\hspace{1cm}}
-                                         + \underline{\hspace{1cm}}=
-                                        \underline{\hspace{3mm}}
-                                        \underline{\hspace{3mm}}};
+    \draw[very thick] (0, 0) grid (10, 2);
+    \node[anchor=center] at (4.5, -0.9) {
+            \textcolor{blue}{\underline{\hspace{1cm}}}
+            + \textcolor{red}{\underline{\hspace{1cm}}}=
+            \underline{\hspace{3mm}}
+            \underline{\hspace{3mm}}
+        };
   \end{scope}
 
 \end{tikzpicture}
 }
+
+\newcommand\singletotwentytable {
+.
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+
+  \begin{scope}
+    \draw[very thick] (0, 0) grid (10, 2);
+    \node[anchor=center] at (4.5, -0.9) {
+            \textcolor{blue}{\underline{\hspace{1cm}}}
+            + \textcolor{red}{\underline{\hspace{1cm}}}=
+            \underline{\hspace{3mm}}
+            \underline{\hspace{3mm}}
+        };
+  \end{scope}
+
+\end{tikzpicture}
+\end{center}
+.
+}
+
+
 
 \begin{document}
 
@@ -59,15 +85,15 @@
 
 \onehalfspacing
 
-Привет! Посчитай мышей! =)
+\Large{Привет! Посчитай мышей! =)}
 
-\totwentytable
+\singletotwentytable
 \\\\\\\\
-\totwentytable
+\singletotwentytable
 \\\\\\\\
-\totwentytable
+\singletotwentytable
 \\\\\\\\
-\totwentytable
+\singletotwentytable
 \\\\\\\\
 
 %\noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
