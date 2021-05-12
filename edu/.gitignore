@@ -1,0 +1,4 @@
+# generated latex build artifacts
+*.pdf
+*.aux
+*.log
