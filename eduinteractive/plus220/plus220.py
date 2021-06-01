@@ -10,6 +10,11 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.spinner import Spinner
 
 class TestApp(App):
+
+    def __init__(self):
+        App.__init__(self)
+
+        self.font_size = 40
     
     def react(self, a):
         if not hasattr(a, "mode"):
@@ -31,7 +36,7 @@ class TestApp(App):
 
         main_layout = BoxLayout(orientation='vertical')
 
-        main_layout.add_widget(Label(text='Make a summ!'))
+        main_layout.add_widget(Label(text='Make a summ!', font_size=self.font_size))
 
         layout = GridLayout(cols=10, size_hint=(1, 1))
 
@@ -43,21 +48,41 @@ class TestApp(App):
 
         main_layout.add_widget(layout)
 
-        main_layout.add_widget(Label(text='Of following numbers:'))
+        main_layout.add_widget(Label(text='Of following numbers:', font_size=self.font_size))
 
         args = BoxLayout()
 
         arg1 = Spinner(
-                    text='First number',
-                    values=('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'))
+                    text='First\nnumber',
+                    values=('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+                    , font_size=self.font_size)
         args.add_widget(arg1)
-        args.add_widget(Label(text='+'))
+        args.add_widget(Label(text='+', font_size=self.font_size))
         arg2 = Spinner(
-                    text='Second number',
-                    values=('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'))
+                    text='Second\nnumber'
+                    , values=('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+                    , font_size=self.font_size)
         args.add_widget(arg2)
 
         main_layout.add_widget(args)
+
+        main_layout.add_widget(Label(text='=', font_size=self.font_size))
+
+        answer = BoxLayout()
+
+        answer1 = Spinner(
+                    text=''
+                    , values=('', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+                    , font_size=self.font_size)
+        answer.add_widget(answer1)
+
+        answer2 = Spinner(
+                    text=''
+                    , values=('', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+                    , font_size=self.font_size)
+        answer.add_widget(answer2)
+
+        main_layout.add_widget(answer)
 
         return main_layout
 
