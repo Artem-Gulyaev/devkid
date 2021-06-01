@@ -34,7 +34,56 @@ class TestApp(App):
             a.mode = 'green'
 
     def check_answer(self, target):
-        pass
+        a = 0
+        b = 0
+
+        try:
+            a = int(self.arg1.text)
+        except:
+            print("Please select the first argument.")
+            return
+        try:
+            b = int(self.arg2.text)
+        except:
+            print("Please select the second argument.")
+            return
+
+        print("Case: %d + %d" % (a, b))
+
+        result = True
+        for i in range(20):
+            btn = self.buttons[i]
+            if not hasattr(btn, 'mode'):
+                btn.mode = 'white'
+
+            if i < a:
+                if btn.mode != 'red':
+                    print("FAILED! At pos: %d. Expected: 'red', actual: '%s'" % (i, btn.mode))
+                    btn.text = "X"
+                    result = False
+                else:
+                    btn.text = ""
+            elif i < a + b:
+                if btn.mode != 'green':
+                    print("FAILED! At pos: %d. Expected: 'green', actual: '%s'" % (i, btn.mode))
+                    btn.text = "X"
+                    result = False
+                else:
+                    btn.text = ""
+            else:
+                if btn.mode != 'white':
+                    print("FAILED! At pos: %d. Expected: 'white', actual: '%s'" % (i, btn.mode))
+                    btn.text = "X"
+                    result = False
+                else:
+                    btn.text = ""
+        if result:
+            self.check_button.background_color = [0.3, 0.3, 1.0, 1.0]
+        else:
+            self.check_button.background_color = [0.1, 0.2, 0.2, 1.0]
+
+        return result
+
 
     def build(self):
         wid = Widget()
@@ -59,19 +108,19 @@ class TestApp(App):
 
         args = BoxLayout()
 
-        arg1 = Spinner(
+        self.arg1 = Spinner(
                     text='First\nnumber',
                     values=('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
                     , font_size=self.font_size
                     , color=[1,0,0,1])
-        args.add_widget(arg1)
+        args.add_widget(self.arg1)
         args.add_widget(Label(text='+', font_size=self.font_size))
-        arg2 = Spinner(
+        self.arg2 = Spinner(
                     text='Second\nnumber'
                     , values=('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
                     , font_size=self.font_size
                     , color=[0,1,0,1])
-        args.add_widget(arg2)
+        args.add_widget(self.arg2)
 
         main_layout.add_widget(args)
 
