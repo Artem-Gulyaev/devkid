@@ -77,10 +77,30 @@ class TestApp(App):
                     result = False
                 else:
                     btn.text = ""
+
+        if (a + b) // 10 == 0:
+            if self.answer1.text != "" and self.answer1.text != "0":
+                print("FAILED! At first digit of the answer. Expected:"
+                      " '0' or empty, actual: '%s'" % (self.answer1.text))
+                self.answer1.background_color = [1.0, 0.2, 0.2, 1.0]
+                result = False
+        else:
+            if self.answer1.text != str((a + b) // 10):
+                print("FAILED! At first digit of the answer. Expected:"
+                      " '%d' , actual: '%s'" % ((a + b) // 10, self.answer1.text))
+                self.answer1.background_color = [1.0, 0.2, 0.2, 1.0]
+                result = False
+
+        if self.answer2.text != str((a + b) % 10):
+            print("FAILED! At second digit of the answer. Expected:"
+                  " '%d' , actual: '%s'" % ((a + b) % 10, self.answer2.text))
+            self.answer2.background_color = [1.0, 0.2, 0.2, 1.0]
+            result = False
+        
         if result:
             self.check_button.background_color = [0.3, 0.3, 1.0, 1.0]
         else:
-            self.check_button.background_color = [0.1, 0.2, 0.2, 1.0]
+            self.check_button.background_color = [1.0, 0.2, 0.2, 1.0]
 
         return result
 
@@ -128,17 +148,17 @@ class TestApp(App):
 
         answer = BoxLayout()
 
-        answer1 = Spinner(
+        self.answer1 = Spinner(
                     text=''
                     , values=('', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
                     , font_size=self.font_size)
-        answer.add_widget(answer1)
+        answer.add_widget(self.answer1)
 
-        answer2 = Spinner(
+        self.answer2 = Spinner(
                     text=''
                     , values=('', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
                     , font_size=self.font_size)
-        answer.add_widget(answer2)
+        answer.add_widget(self.answer2)
         answer.size_hint = (0.2, None)
         answer.pos_hint = {'center_x': 0.5}
 
