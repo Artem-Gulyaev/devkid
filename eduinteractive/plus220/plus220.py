@@ -10,10 +10,12 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.spinner import Spinner
 from kivy.config import Config
 from kivy.core.window import Window
+from kivy.uix.image import Image
+from kivy.core.audio import SoundLoader
 
 #Window.size = (1900, 1100)
 
-first_arg_color = [1.0, 0.5, 0.3, 1]
+first_arg_color = [1.0, 0.7, 0.1, 1]
 second_arg_color = [0.3, 1, 0.3, 1]
 
 neutral_color = [1, 1, 1, 1]
@@ -27,6 +29,11 @@ class TestApp(App):
         App.__init__(self)
 
         self.font_size = 40
+        self.rewarded = False
+        self.well_done_sound = SoundLoader.load('well-done-ru.wav')
+        self.try_again_sound = SoundLoader.load('try-again-ru.wav')
+        self.well_done_sound.volume = 0.3
+        self.try_again_sound.volume = 0.3
     
     def react(self, a):
         if not hasattr(a, "mode"):
@@ -113,11 +120,31 @@ class TestApp(App):
         
         if result:
             self.check_button.background_color = pass_color
+            if not self.rewarded:
+                self.reward_layout.add_widget(Image(source='mouse_1.png'))
+                if self.well_done_sound:
+                    self.well_done_sound.play()
         else:
             self.check_button.background_color = fail_color
+            if self.try_again_sound:
+                self.try_again_sound.play()
 
         return result
 
+    def reset_indication(self, a, b):
+        print("Resetting indication.")
+        for i in range(20):
+            btn = self.buttons[i]
+            btn.background_color = neutral_color
+            btn.mode = "white"
+            btn.text = ""
+
+        self.answer1.background_color = neutral_color
+        self.answer2.background_color = neutral_color
+
+        self.check_button.background_color = neutral_color
+
+        self.rewarded = False
 
     def build(self):
         wid = Widget()
@@ -146,14 +173,20 @@ class TestApp(App):
                     text='First\nnumber',
                     values=('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
                     , font_size=self.font_size
-                    , color=first_arg_color)
+                    , color=first_arg_color
+                    , on_text=self.reset_indication)
+        self.arg1.bind(text=self.reset_indication)
         args.add_widget(self.arg1)
+
         args.add_widget(Label(text='+', font_size=self.font_size))
+
         self.arg2 = Spinner(
                     text='Second\nnumber'
                     , values=('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
                     , font_size=self.font_size
-                    , color=second_arg_color)
+                    , color=second_arg_color
+                    , on_text=self.reset_indication)
+        self.arg2.bind(text=self.reset_indication)
         args.add_widget(self.arg2)
 
         main_layout.add_widget(args)
@@ -173,6 +206,7 @@ class TestApp(App):
                     , values=('', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
                     , font_size=self.font_size)
         answer.add_widget(self.answer2)
+
         answer.size_hint = (0.2, None)
         answer.pos_hint = {'center_x': 0.5}
 
@@ -183,6 +217,10 @@ class TestApp(App):
         main_layout.add_widget(Label(text='And check the result!'
                                      , font_size=self.font_size, color=neutral_color))
         main_layout.add_widget(self.check_button)
+
+        # reward =)
+        self.reward_layout = GridLayout(cols=10)
+        main_layout.add_widget(self.reward_layout)
 
         main_layout.size_hint = (1.0, 1.0)
 
