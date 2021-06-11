@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 class Env:
     def __init__(self, k):
         self.centers = np.random.normal(10.0, 5.0, k)
-        self.sigmas = np.full((10,1), 0.1)#np.abs(np.random.normal(5.0, 2.0, k))
+        self.sigmas = np.abs(np.random.normal(5.0, 2.0, k))
 
     def action(self, idx):
         return np.random.normal(self.centers[idx], self.sigmas[idx])
@@ -17,6 +17,51 @@ class Env:
     def __str__(self):
         return ("Best action index: %s\ndistribution centers: %s"
                 % (str(self.get_best_action_idx()), str(self.centers)))
+
+class NonStationaryEnv:
+    def __init__(self, k, stationary=False):
+        self.k = k
+        self.centers = np.random.normal(10.0, 5.0, k)
+        self.sigmas = np.abs(np.random.normal(5.0, 2.0, k))
+        # abs center shift per 100 actions
+        if stationary:
+            self.migration = np.zeros(shape=(k,))
+        else:
+            self.migration = np.random.normal(3.0, 3.0, k)
+        self.time = 0.0;
+
+    def get_current_center(self, idx):
+        return self.centers[idx] + self.migration[idx] * self.time / 100.0
+
+    def action(self, idx):
+        # non-stationary task: the action result slowly migrates with time
+        value = np.random.normal(self.get_current_center(idx), self.sigmas[idx])
+        self.time += 1.0
+        return value
+
+    # returns a matrix-string of best index values over the history
+    # @steps the number of steps for the
+    #
+    # RETURNS: (steps,) shaped array of best action indexes vs time step
+    def get_best_action_idx(self, steps=1000):
+        best_idx = np.zeros(shape=(steps,))
+        for t in range(steps):
+            self.time = float(t)
+            max_idx = 0
+            max_val = self.get_current_center(max_idx)
+            for i in range(self.k):
+                val = self.get_current_center(i)
+                if (val > max_val):
+                    max_val = val
+                    max_idx = i
+            best_idx[t] = max_idx
+
+        return best_idx
+
+    def __str__(self):
+        return ("Best action index: %s\ndistribution centers: %s"
+                % (str(self.get_best_action_idx()), str(self.centers)))
+
 
 
 # Simple agent for k-armed problem
@@ -72,7 +117,7 @@ class Agent:
 
 
 def run_single_experiment():
-    current_env = Env(10)
+    current_env = NonStationaryEnv(10)
 
     a = Agent(10)
     history, cummulative_reward = a.run_agent(current_env, 1000, {'epsilon' : 0.1})
@@ -92,7 +137,7 @@ def run_experiment_series():
 
     for epsilon in epsilon_variants:
         for i in range(experiments_count):
-            current_env = Env(10)
+            current_env = NonStationaryEnv(10)
 
             a = Agent(10)
             history, cummulative_reward = a.run_agent(current_env, 1000, {'epsilon' : epsilon})
@@ -111,8 +156,8 @@ def run_experiment_series():
     plt.xlabel('Step #')
     plt.ylabel('Part of best action selected')
 
-    plt.title('Stationary k-bandid problem, 10 actions, normal '
-              'reward distribution')
+    plt.title('Non-stationary k-bandid problem, 10 actions, normal '
+              'reward distribution, normal distribution shift with time')
 
     plt.show()
 
